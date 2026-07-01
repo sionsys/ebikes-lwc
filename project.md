@@ -1,0 +1,1 @@
+# Foundational Project Documentation Context extracted for ebikes-lwc development.

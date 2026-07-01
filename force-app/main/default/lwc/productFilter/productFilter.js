@@ -19,10 +19,12 @@ const DELAY = 350;
 export default class ProductFilter extends LightningElement {
     searchKey = '';
     maxPrice = 10000;
+    year = '';
 
     filters = {
         searchKey: '',
-        maxPrice: 10000
+        maxPrice: 10000,
+        year: ''
     };
 
     @wire(MessageContext)
@@ -49,6 +51,17 @@ export default class ProductFilter extends LightningElement {
     handleSearchKeyChange(event) {
         this.filters.searchKey = event.target.value;
         this.delayedFireFilterChangeEvent();
+    }
+
+    handleYearChange(event) {
+        this.year = event.target.value;
+        
+        // Usamos el debounce/timeout clásico del proyecto para no saturar la búsqueda
+        window.clearTimeout(this.delayTimeout);
+        this.delayTimeout = setTimeout(() => {
+            // Publicamos el cambio del filtro al Message Channel o evento de la tienda
+            this.fireFilterChangeEvent();
+        }, 400);
     }
 
     handleMaxPriceChange(event) {
@@ -85,6 +98,14 @@ export default class ProductFilter extends LightningElement {
         publish(this.messageContext, PRODUCTS_FILTERED_MESSAGE, {
             filters: this.filters
         });
+    }
+
+    handleYearChange(event) {
+        // Guardamos el año que escriba el usuario directo en el objeto de filtros
+        this.filters.year = event.target.value;
+        
+        // Llamamos a la función de tu captura para que mande la señal a la tienda
+        this.delayedFireFilterChangeEvent();
     }
 
     delayedFireFilterChangeEvent() {

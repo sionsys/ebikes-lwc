@@ -16,6 +16,15 @@
                     onchange={handleMaxPriceChange}
                 ></lightning-slider>
             </section>
+            <div class="slds-m-bottom_large">
+                <lightning-input
+                    type="number"
+                    label="Año de Modelo"
+                    name="year"
+                    onchange={handleYearChange}
+                    placeholder="Ej. 2026">
+                </lightning-input>
+            </div>
             <section>
                 <h1>Category</h1>
                 <template lwc:if={categories.data}>
